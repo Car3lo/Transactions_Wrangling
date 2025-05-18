@@ -1,0 +1,88 @@
+---
+title: "Customer Transactions"
+author: "Car3lo"
+date: "2025-05-15"
+output: github_document
+---
+# Curating Information from Customer and Bank Information
+
+### Importing 4 Datasets
+Importing the main dataset: `01 - Customer Info.csv` as `customer`
+```{r warning=FALSE}
+#getwd()
+library(readr)
+library(tidyverse)
+
+customer <- read_csv(file = "01 - Customer Info.csv",
+                     col_names = TRUE,
+                     na = "",
+                     col_types = cols(CustomerId = col_integer(),
+                                      age = col_integer(),
+                                      surname = col_character(),
+                                      middle = col_character(),
+                                      given = col_character(),
+                                      sex = col_factor(levels = c("Male", "Female")),
+                                      bday = col_date(format = "%Y-%m-%d"),
+                                      est_income = col_number())) %>% 
+  distinct() %>% 
+  group_by(CustomerId) %>% 
+  filter(n() == 1) %>% 
+  ungroup() %>% 
+  mutate(age_group = case_when(
+    age <= 24 ~ "24 and below",
+    age >= 25 & age <= 39 ~ "25 to 39",
+    age >= 40 & age <= 54 ~ "40 to 54",
+    age >= 55 ~ "55 and up"
+  ) %>%
+    factor(levels = c("24 and below", "25 to 39", "40 to 54", "55 and up"), ordered = TRUE))
+
+head(customer)
+ncol(customer)
+nrow(customer)
+```
+
+Importing the other datasets
+```{r}
+transactions <- read_rds("02 - transactions.rds")
+cards <- read_rds("03 - cards.rds")
+menu <- read_csv("04 - menu items.csv", col_names = TRUE)
+
+head(transactions)
+head(cards)
+head(menu)
+```
+
+
+### Summary Stats by sex and age group
+```{r}
+customer %>% 
+  left_join(cards, by = "CustomerId") %>% 
+  left_join(transactions, by = "CardId") %>% 
+  left_join(menu, by = c("item" = "ItemCode")) %>% 
+  group_by(sex, age_group) %>% 
+  summarize(
+    "total transactions" = n(), # use this if you want to count same transaction ids are unique
+    #"total transactions" = n_distinct(TransId), # use this if same transaction id = one transaction
+    "total revenue" = sum(Price * count, na.rm = T)
+  )
+```
+
+### Customer details
+```{r}
+customer %>% 
+  left_join(cards, by = "CustomerId") %>% 
+  left_join(transactions, by = "CardId") %>% 
+  left_join(menu, by = c("item" = "ItemCode")) %>% 
+  group_by(CustomerId) %>% 
+  summarize(
+    "totalbalance" = sum(Balance, na.rm = T),
+    "avg #items per transactions" = mean(count, na.rm = T),
+    "avg value per transaction" = mean(Price * count, na.rm = T),
+    "total value of transactions" = sum(Price * count, na.rm = T),
+    "total_points" = sum((Price * count) %/% 500, na.rm = TRUE)
+  )
+```
+
+
+
+

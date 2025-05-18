@@ -1,0 +1,22 @@
+ItemCode,MenuItem,Category,Price
+BC,Brewed Coffee,Hot Drink,110.000
+CA,Cafe Americano,Hot Drink,130.000
+Cap,Cappuccino,Hot Drink,150.000
+CarM,Caramel Macchiato,Hot Drink,170.000
+SHC,Signature Hot Chocolate,Hot Drink,130.000
+ICA,Iced Cafe Americano,Cold Drink,170.000
+ICarM,Iced Caramel Macchiato,Cold Drink,140.000
+DMF,Dark Mocha Frappe,Cold Drink,150.000
+GTF,Green Tea Frappe,Cold Drink,160.000
+CCF,Chocolate Chip Frappe,Cold Drink,160.000
+BB,Banana Bread,Bread or Sandwich,70.000
+SP,"Special Pandesal (Tuna, or Chicken)",Bread or Sandwich,60.000
+FT,French Toast,Bread or Sandwich,70.000
+MS,Muffin Sandwich (Bacon and Cheese),Bread or Sandwich,115.000
+CS,Classic Sandwich (Tuna or Chicken),Bread or Sandwich,130.000
+DDS,Double Decker Sandwich (Tuna or Chicken),Bread or Sandwich,170.000
+SR,Sausage Roll,Bread or Sandwich,110.000
+MC,Macadamia Cookie,Dessert,85.000
+SD,Signature Doughnut,Dessert,75.000
+BP,Banoffee Pie,Dessert,120.000
+BCc,Blueberry Cheesecake,Dessert,125.000
